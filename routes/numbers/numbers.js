@@ -50,6 +50,25 @@ var numbers = {
 			}
 		});
   	},
+  	addSeriesNumber: function(req, res) {
+  		var params = [];
+  		var num = parseInt(req.body.number);
+		for(i=0;i<req.body.size;i++){
+			params.push(["0"+num.toString()]);
+			num = num + 1; 
+		}
+		var sql = "INSERT INTO numbers (number) VALUES ?";
+		db.query(sql, [params], function(err, results) {
+			if (!err) {
+				return res.send(results);
+			} else {
+				console.log(err);
+				return res.status(500).send({
+					error: err
+				});
+			}
+		});
+  	},
   	deleteNumber: function(req, res) {
 	    var number = req.params.number;
 		var sql = "DELETE FROM numbers WHERE number = " + db.escape(number);
