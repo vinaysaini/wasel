@@ -69,6 +69,45 @@ var numbers = {
 			}
 		});
   	},
+  	addRandomNumber: function(req, res) {
+  		function in_array(array, el) {
+		   for(var i = 0 ; i < array.length; i++) 
+		       if(array[i] == el) return true;
+		   return false;
+		}
+		var gen_nums = [];
+		function get_rand(array) {
+		    var rand = array[Math.floor(Math.random()*array.length)];
+		    if(!in_array(gen_nums, rand)) {
+		       gen_nums.push(rand); 
+		       return rand;
+		    }
+		    return get_rand(array);
+		}
+		var poolArray = [];
+		var finalArray = [];
+  		var poolNumber = parseInt(req.body.number);
+		for(i=0;i<req.body.size;i++){
+			poolArray.push(poolNumber);
+			poolNumber = poolNumber + 1; 
+		}
+		console.log("poolArray=====",poolArray);
+		for(var i = 0; i < req.body.range; i++) {
+			randNumber = get_rand(poolArray);
+		    finalArray.push(["0"+randNumber.toString()]);
+		}
+		var sql = "INSERT INTO numbers (number) VALUES ?";
+		db.query(sql, [finalArray], function(err, results) {
+			if (!err) {
+				return res.send(results);
+			} else {
+				console.log(err);
+				return res.status(500).send({
+					error: err
+				});
+			}
+		});
+  	},
   	deleteNumber: function(req, res) {
 	    var number = req.params.number;
 		var sql = "DELETE FROM numbers WHERE number = " + db.escape(number);
