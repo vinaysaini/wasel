@@ -91,7 +91,6 @@ var numbers = {
 			poolArray.push(poolNumber);
 			poolNumber = poolNumber + 1; 
 		}
-		console.log("poolArray=====",poolArray);
 		for(var i = 0; i < req.body.range; i++) {
 			randNumber = get_rand(poolArray);
 		    finalArray.push(["0"+randNumber.toString()]);
