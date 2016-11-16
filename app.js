@@ -4,12 +4,20 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var autoReap  = require('multer-autoreap');
+
 
 var app = express();
 app.use(logger('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ dest: 'uploads/' }).single('groupfile'));
+autoReap.options = {
+    reapOnError: true
+};
+app.use(autoReap);
 app.use(cookieParser());
 
 // Allow CORS
@@ -25,6 +33,7 @@ app.all('/*', function(req, res, next) {
 // Any URL's that do not follow the below pattern should be avoided unless you 
 // are sure that authentication is not needed
 app.use('/', require('./routes'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

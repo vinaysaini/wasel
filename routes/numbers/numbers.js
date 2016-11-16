@@ -1,5 +1,6 @@
 var express = require('express');
 var db = require('../../common/db');
+var xlsxj = require("xlsx-to-json");
 
 var numbers = {
 	getNumbers: function(req, res) {
@@ -49,6 +50,57 @@ var numbers = {
 				});
 			}
 		});
+  	},
+  	addBulkNumberViaFile: function(req, res) {
+  		var params = [];
+  		var path = req.file.path;
+        xlsxj({ input: path, output: "output.json"}, function(err, result) {
+			if(err) {
+				return res.status(500).send({
+					error: err
+				});
+			}else {
+				for(i=0;i<result.length;i++){
+					params.push(["0"+result[i].Numbers]);
+				}
+				if(req.body.deleteOld){
+					var sqlDelete = "truncate numbers";
+					db.query(sqlDelete, function(err, results) {
+						if (!err) {
+							var sql = "INSERT INTO numbers (number) VALUES ?";
+							db.query(sql, [params], function(err, results) {
+								if (!err) {
+									return res.send(results);
+								} else {
+									console.log(err);
+									return res.status(500).send({
+										error: err
+									});
+								}
+							});
+						} else {
+							console.log(err);
+							return res.status(500).send({
+								error: err
+							});
+						}
+					});
+				}else{
+					var sql = "INSERT INTO numbers (number) VALUES ?";
+					db.query(sql, [params], function(err, results) {
+						if (!err) {
+							return res.send(results);
+						} else {
+							console.log(err);
+							return res.status(500).send({
+								error: err
+							});
+						}
+					});
+				}
+			}
+		});
+	    
   	},
   	addSeriesNumber: function(req, res) {
   		var params = [];
@@ -196,7 +248,7 @@ var numbers = {
 	        });
 	        return;
 	    });
-  	},
+  	}
 }
 
 module.exports = numbers;
