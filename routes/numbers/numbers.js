@@ -73,7 +73,7 @@ var numbers = {
 						if(result[i].Number.length==9)
 						params.push(["0"+result[i].Number]);
 					}
-					if(result[i].){
+					if(result[i].number){
 						if(result[i].number.length==9)
 						params.push(["0"+result[i].number]);
 					}
