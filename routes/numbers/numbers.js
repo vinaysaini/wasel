@@ -61,7 +61,19 @@ var numbers = {
 				});
 			}else {
 				for(i=0;i<result.length;i++){
-					params.push(["0"+result[i].Numbers]);
+					if(result[i].Numbers){
+						params.push(["0"+result[i].Numbers]);
+					}
+					if(result[i].numbers){
+						params.push(["0"+result[i].numbers]);
+					}
+					if(result[i].Number){
+						params.push(["0"+result[i].Number]);
+					}
+					if(result[i].number){
+						params.push(["0"+result[i].number]);
+					}
+					
 				}
 				if(req.body.deleteOld){
 					var sqlDelete = "truncate numbers";
