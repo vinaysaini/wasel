@@ -6,7 +6,7 @@ var numbers = require('./numbers/numbers.js');
 /*##########################################################*/
 
 router.get('/', function(req, res) {
-  res.render("index.jade", {title: "Upload CSV file"});
+  res.render("index.jade", {title: "Upload xlxs file"});
 }); 
 
 /*################### Routes ##############################*/
