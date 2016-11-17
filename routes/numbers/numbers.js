@@ -62,15 +62,19 @@ var numbers = {
 			}else {
 				for(i=0;i<result.length;i++){
 					if(result[i].Numbers){
+						if(result[i].Numbers.length==9)
 						params.push(["0"+result[i].Numbers]);
 					}
 					if(result[i].numbers){
+						if(result[i].numbers.length==9)
 						params.push(["0"+result[i].numbers]);
 					}
 					if(result[i].Number){
+						if(result[i].Number.length==9)
 						params.push(["0"+result[i].Number]);
 					}
-					if(result[i].number){
+					if(result[i].){
+						if(result[i].number.length==9)
 						params.push(["0"+result[i].number]);
 					}
 					
